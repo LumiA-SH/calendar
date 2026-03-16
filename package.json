@@ -11,7 +11,6 @@
     "date-fns": "^4.1.0",
     "deploy": "^1.1.0",
     "framer-motion": "^12.37.0",
-    "gh-pages": "^6.3.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-scripts": "5.0.1",
@@ -40,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
