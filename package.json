@@ -1,6 +1,7 @@
 {
   "name": "calanda",
   "version": "0.1.0",
+  "homepage": "https://lumia-sh.github.io/calendar",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
