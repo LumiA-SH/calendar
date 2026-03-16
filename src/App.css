@@ -1,38 +1,1095 @@
-.App {
+/* 1. 기본 설정 및 레이아웃 (Reset & Base) */
+
+* {
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+}
+
+
+
+body {
+
+  background-color: #E6E6FA; /* 연보라색 배경 */
+
+  font-family: 'Arial', sans-serif;
+
+  color: #333;
+
+  overflow-y: scroll; /* 브라우저 스크롤 사용 */
+
+}
+
+
+
+.app-container {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+}
+
+
+
+.header, .footer {
+
+  padding: 20px;
+
+  background-color: rgba(255, 255, 255, 0.4);
+
   text-align: center;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+.main-content {
+
+  flex: 1;
+
+  padding: 30px 20px;
+
+  display: flex;
+
+  justify-content: center;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+
+
+/* 2. 캘린더 컨테이너 */
+
+.calendar-outer-wrapper {
+
+  background: white;
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  border-radius: 12px;
+
+  padding: 20px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+}
+
+
+
+.calendar-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.calendar-header button {
+
+  background-color: #E6E6FA;
+
+  border: none;
+
+  padding: 8px 16px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-weight: bold;
+
+  transition: background-color 0.2s;
+
+}
+
+
+
+.calendar-header button:hover { background-color: #D8BFD8; }
+
+
+
+/* 3. 그리드 시스템 (Table-like structure) */
+
+.calendar-body {
+
+  display: flex;
+
+  flex-direction: column;
+
+  border-top: 1px solid #eee;
+
+  border-left: 1px solid #eee;
+
+}
+
+
+
+.day-names-row {
+
+  display: flex;
+
+  background: #fdfdfd;
+
+}
+
+
+
+.day-name {
+
+  flex: 1;
+
+  text-align: center;
+
+  padding: 10px 0;
+
+  font-weight: bold;
+
+  border-right: 1px solid #eee;
+
+  border-bottom: 1px solid #eee;
+
+  color: #555;
+
+}
+
+
+
+.day-name.sunday { color: #e74c3c; }
+
+.day-name.saturday { color: #3498db; }
+
+
+
+.calendar-row {
+
+  display: flex;
+
+  min-height: 140px;
+
+}
+
+
+
+.calendar-day {
+
+  flex: 1;
+
+  padding: 10px;
+
+  border-right: 1px solid #eee;
+
+  border-bottom: 1px solid #eee;
+
+  background: #fff;
+
+  display: flex;
+
+  flex-direction: column;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s;
+
+}
+
+
+
+.calendar-day:hover { background-color: #f9f9f9; }
+
+.calendar-day.other { color: #ccc; background: #fafafa; }
+
+.calendar-day.today-cell { background-color: #f0f4ff !important; }
+
+
+
+.day-num {
+
+  align-self: flex-start;
+
+  margin-bottom: 5px;
+
+  font-size: 14px;
+
+}
+
+
+
+/* 4. 일정 아이템 스타일 */
+
+.schedule-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  flex: 1;
+
+}
+
+
+
+.sch-item {
+  display: flex !important;
+  flex-direction: column !important; /* 이게 있어야 제목 아래로 시간이 내려갑니다 */
+  align-items: flex-start !important;
+  padding: 4px 8px !important;
+  line-height: 1.2 !important;
+}
+
+
+
+/* 5. 모달 및 입력 폼 */
+
+.modal-overlay {
+
+  position: fixed;
+
+  top: 0; left: 0; width: 100%; height: 100%;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex; justify-content: center; align-items: center;
+
+  z-index: 1000;
+
+}
+
+
+
+.modal-content {
+
+  background: white;
+
+  padding: 25px;
+
+  border-radius: 12px;
+
+  width: 380px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+}
+
+
+
+.modal-title-input {
+
+  width: 100%;
+
+  font-size: 18px;
+
+  padding: 10px 0;
+
+  border: none;
+
+  border-bottom: 2px solid #eee;
+
+  outline: none;
+
+}
+
+
+
+/* 폼 박스 내부 레이아웃 */
+
+.time-select-container {
+
+  background: #f8f9fa;
+
+  padding: 15px;
+
+  border-radius: 8px;
+
+}
+
+
+
+.time-row {
+
+  display: flex;
+
+  align-items: center;
+
+  margin-bottom: 10px;
+
+}
+
+.time-row:last-child { margin-bottom: 0; }
+
+
+
+.time-label {
+
+  width: 50px;
+
+  font-weight: bold;
+
+  color: #555;
+
+  font-size: 14px;
+
+}
+
+
+
+/* 시/분 드롭다운 1:1 비율 디자인 */
+
+.picker-group-equal {
+
+  flex: 1;
+
+  display: flex;
+
+  gap: 8px;
+
+}
+
+
+
+.equal-select {
+
+  flex: 1;
+
+  width: 50%;
+
+  height: 40px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 6px;
+
+  background-color: white;
+
+  font-size: 15px;
+
+  padding: 0 10px;
+
+  cursor: pointer;
+
+  outline: none;
+
+}
+
+
+
+/* 반복 및 컬러 선택 */
+
+.repeat-row {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+
+.repeat-select-full {
+
+  flex: 1;
+
+  height: 40px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 6px;
+
+  margin-left: 10px;
+
+  padding: 0 10px;
+
+  background-color: white;
+
+  outline: none;
+
+}
+
+
+
+.color-dots-row {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+
+}
+
+
+
+.color-dot {
+
+  width: 24px; height: 24px;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  border: 2px solid transparent;
+
+  transition: transform 0.2s;
+
+}
+
+.color-dot.active { border-color: #333; transform: scale(1.1); }
+
+
+
+.modal-desc-input {
+
+  width: 100%;
+
+  height: 80px;
+
+  padding: 10px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 6px;
+
+  resize: none;
+
+  font-family: inherit;
+
+}
+
+
+
+/* 5. 모달 버튼 최종 교정 */
+
+.modal-buttons {
+
+  display: flex !important;
+
+  /* 버튼 그룹 전체를 양쪽 끝으로 밀어냅니다. */
+
+  justify-content: space-between !important;
+
+  align-items: center !important;
+
+  margin-top: 15px;
+
+  width: 100%;
+
+}
+
+
+
+/* 취소와 삭제를 묶어주는 왼쪽 그룹 */
+
+.button-group-left {
+
+  display: flex !important;
+
+  gap: 10px !important; /* 취소와 삭제 사이 간격 */
+
+}
+
+
+
+/* 모든 버튼 공통 스타일 유지 */
+
+.modal-buttons button {
+
+  padding: 10px 18px !important;
+
+  border: none !important;
+
+  border-radius: 8px !important;
+
+  font-weight: bold !important;
+
+  cursor: pointer !important;
+
+}
+
+
+
+/* 각 버튼 색상 (기존 디자인 유지) */
+
+.cancel-btn { background-color: #eee !important; color: #333 !important; }
+
+.delete-btn { background-color: #ffeded !important; color: #d93025 !important; }
+
+.save-btn { background-color: #6A5ACD !important; color: white !important; }
+
+
+
+/* PC 기본 스타일 (이미지처럼 완만한 사각형 유지) */
+
+.sch-item {
+
+  background-color: #8b5cf6;
+
+  color: white;
+
+  padding: 4px 8px;
+
+  border-radius: 8px; /* 보내주신 이미지의 완만한 곡선 */
+
+  font-size: 12px;
+
+  margin-top: 4px;
+
+  cursor: pointer;
+
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  transition: transform 0.1s ease;
+
+}
+
+.sch-item:hover { transform: scale(1.02); }
+
+.sch-title { font-weight: bold; }
+
+.sch-time { font-size: 10px; opacity: 0.9; }
+
+
+
+/* 날짜 칸 기본 설정 */
+
+.calendar-day {
+
+  min-height: 110px;
+
+  border: 1px solid #f0f0f0;
+
+  padding: 5px;
+
+  cursor: pointer;
+
+  transition: background 0.2s;
+
+}
+
+.selected-day { background-color: #f8f7ff !important; border: 2px solid #8b5cf6 !important; border-radius: 8px; }
+
+
+
+/* 모바일 최적화 (768px 이하) */
+
+@media (max-width: 768px) {
+
+  .calendar-day {
+
+    min-height: 55px !important; /* 높이 축소 */
+
+    height: 55px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+  }
+
+  .sch-list { display: none; } /* 칸 내부 리스트 숨김 */
+
+  .event-dot {
+
+    display: block;
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    margin-top: 4px;
+
+  }
+
+  .mobile-schedule-details {
+
+    display: block;
+
+    padding: 20px;
+
+    background: #fff;
+
+    border-top: 1px solid #eee;
+
+  }
+
+}
+
+
+
+/* PC에서는 상세 리스트와 점 숨김 */
+
+@media (min-width: 769px) {
+
+  .event-dot { display: none; }
+
+  .mobile-schedule-details { display: none; }
+
+}
+
+
+
+/* 모바일에서 달력 높이 최적화 */
+
+@media (max-width: 768px) {
+
+  .calendar-body {
+
+    padding: 10px;
+
+  }
+
+
+
+  .calendar-row {
+
+    height: auto !important; /* 고정 높이 해제 */
+
+  }
+
+
+
+  .calendar-day {
+
+    min-height: 50px !important; /* 이미지의 긴 여백 제거 */
+
+    height: 55px !important;
+
+    padding: 2px !important;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 0.5px solid #f0f0f0; /* 테두리 연하게 */
+
+  }
+
+
+
+  .day-num {
+
+    font-size: 14px;
+
+    margin-bottom: 2px;
+
+  }
+
+
+
+  /* 선택된 날짜 강조 */
+
+  .selected-day {
+
+    background-color: transparent !important;
+
+    border: 2px solid #8b5cf6 !important;
+
+    border-radius: 8px;
+  }
+
+  /* 모바일에서 내부 일정 리스트 완전 제거 (점만 남김) */
+  .sch-list {
+    display: none !important;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+@media (max-width: 768px) {
+  .calendar-body {
+    padding: 5px; /* 외부 여백 최소화 */
+  }
+
+  .calendar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* 줄 간격 제거 */
+  }
+
+  .calendar-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: auto !important;
+    border-bottom: 0.5px solid #eee; /* 구분선만 남김 */
+  }
+
+  .calendar-day {
+    min-height: 45px !important; /* 높이 최적화 */
+    height: 45px !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none !important; /* 중간 테두리 제거로 여백 최소화 */
+
+  }
+
+  .day-num {
+    font-size: 15px;
+    line-height: 1;
+    margin-bottom: 2px;
+
+  }
+
+  /* 점(Dot) 위치 조정 */
+  .event-dot {
+
+    margin-top: 0;
+    width: 5px;
+    height: 5px;
+  }
+
+  /* 하단 리스트 영역 상단 여백 제거 */
+  .mobile-schedule-details {
+    margin-top: 0;
+    border-top: 2px solid #f0f0f0;
+  }
+}
+
+
+/* --- [당일(Today) 강조 스타일] --- */
+
+.today-cell {
+  background-color: rgba(139, 92, 246, 0.12) !important; /* 당일만 은은한 보라색 배경 */
+  font-weight: bold;
+}
+
+.today-cell .day-num {
+  color: #8b5cf6; /* 오늘 날짜 숫자만 보라색으로 강조 */
+}
+
+
+
+/* --- [선택된 날짜(Selected) 스타일] --- */
+
+.selected-day {
+  border: 2px solid #8b5cf6 !important; /* 선택한 날은 테두리로 표시 */
+  border-radius: 8px;
+}
+
+
+
+/* --- [모바일 여백 제거 완결] --- */
+
+@media (max-width: 768px) {
+  .calendar-day {
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 0.5px solid #f0f0f0;
+  }
+
+  .sch-list { display: none !important; } /* 모바일 칸 내부 리스트 제거 */
+  .event-dot { margin-top: 2px; }
+
+}
+/* [모바일 최적화 - 사용자 선호 버전] */
+@media (max-width: 768px) {
+  /* 1. 달력 그리드를 모바일에 맞게 조정 */
+  .calendar-row {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    min-height: auto !important;
+  }
+
+  /* 2. 날짜 칸 높이 축소 및 중앙 정렬 */
+  .calendar-day {
+    height: 60px !important;
+    padding: 2px 0 !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    border-right: 1px solid #eee !important;
+    border-bottom: 1px solid #eee !important;
+  }
+
+  /* 3. 날짜 숫자 크기 조정 */
+  .day-num {
+    font-size: 12px !important;
+    margin-bottom: 2px !important;
+    align-self: center !important;
+  }
+
+  /* 4. 긴 일정 바 숨기고 점(Dot)으로 표시 */
+  .sch-item {
+    display: none !important;
+  }
+
+  /* 5. 일정이 있는 날 표시하는 작은 점 */
+  .event-dot {
+    display: block !important;
+    width: 5px !important;
+    height: 5px !important;
+    border-radius: 50% !important;
+    background-color: #8b5cf6 !important; /* 기본 보라색 점 */
+    margin: 0 auto !important;
+  }
+
+  /* 6. 모달 팝업 너비 조정 */
+  .modal-content {
+    width: 90% !important;
+    padding: 20px !important;
+  }
+
+  /* 7. 시간 선택 박스 내의 글자 크기 축소 */
+  .time-label {
+    font-size: 12px !important;
+    width: 35px !important;
+  }
+
+  .equal-select {
+    font-size: 12px !important;
+    height: 35px !important;
+  }
+}
+/* 날짜 아래 상세 일정 리스트 컨테이너 */
+.day-schedule-list {
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+/* 개별 일정 아이템 */
+.schedule-item-mini {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 4px;
+  padding: 2px 4px;
+  background-color: #f3f4f6; /* 아주 연한 회색 배경 */
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.App-link {
-  color: #61dafb;
+.schedule-time-mini {
+  font-weight: bold;
+  color: #6b7280;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.schedule-title-mini {
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 일정이 있을 때 나타나는 점 (PC/모바일 공통) */
+.event-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #ef4444; /* 혹은 사용자 선호 색상 #8b5cf6 */
+  border-radius: 50%;
+  margin: 2px auto;
+}
+
+/* PC에서 상세 리스트가 보이도록 설정 */
+@media (min-width: 769px) {
+  .sch-list {
+    display: flex !important;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 5px;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+/* 768px 이하 모바일 설정 */
+@media (max-width: 768px) {
+  .sch-list { display: none !important; } /* 칸 내부 리스트는 숨김 */
+  .event-dot { display: block !important; } /* 점만 표시 */
+}
+
+@media (max-width: 768px) {
+  .mobile-schedule-details {
+    padding: 20px;
+    background: #fff;
+    border-top: 2px solid #f0f0f0;
+    margin-top: 10px;
+  }
+  .mobile-sch-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  .mobile-sch-item .info { display: flex; flex-direction: column; }
+  .mobile-sch-item .title { font-weight: bold; font-size: 16px; }
+  .mobile-sch-item .time { font-size: 13px; color: #666; }
+}
+
+/* 하단 상세 영역 배경색 및 여백 */
+.mobile-schedule-details {
+  min-height: 100px; /* 내용이 없어도 공간 유지하고 싶을 경우 */
+  padding: 15px;
+  background: transparent;
+}
+
+/* 카드 디자인에서 '>' 기호가 필요 없으므로 제거된 상태의 여백 보정 */
+.mobile-sch-card {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mobile-sch-card:active {
+  background: #f0f0f0;
+}
+
+/* 1. 기본적으로 PC에서는 모바일용 버튼들을 숨깁니다 */
+.mobile-inline-add, .mobile-fab {
+  display: none !important;
+}
+
+/* 2. 모바일 환경(768px 이하)에서만 보이게 설정 */
+@media (max-width: 768px) {
+  .mobile-sch-card {
+    position: relative; /* 버튼 배치를 위한 기준점 */
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* 우측 상단 + 버튼 스타일 */
+  .mobile-inline-add {
+    display: flex !important; /* 모바일에서만 표시 */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #9ca3af;
+    cursor: pointer;
+  }
+
+  /* 하단 큰 + 버튼도 모바일에서만 표시 */
+  .mobile-fab {
+    display: flex !important;
+  }
+
+  /* 시간 정보 레이아웃 (제목 아래) */
+  .sch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sch-title-main {
+    font-weight: 700;
+    font-size: 16px;
+    color: #111827;
+    padding-right: 30px; /* 버튼과 겹치지 않게 여백 추가 */
+  }
+
+  .sch-time-sub {
+    font-size: 13px;
+    color: #6b7280;
+  }
+}
+
+/* 1. 웹(PC)에서는 모든 모바일용 추가 버튼을 숨김 */
+.mobile-add-icon-btn, .mobile-fab {
+  display: none !important;
+}
+
+/* 2. 모바일 환경(768px 이하) 스타일 */
+@media (max-width: 768px) {
+  .details-header-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-right: 10px;
+  }
+
+  /* 보라색 원형 + 버튼 스타일 */
+  .mobile-add-icon-btn {
+    display: flex !important;
+    width: 36px;
+    height: 36px;
+    background-color: #8b5cf6 !important; /* 이미지의 보라색 */
+    color: white !important;
+    border-radius: 50% !important;
+    border: none;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(139, 92, 246, 0.3);
+    cursor: pointer;
+  }
+
+  .mobile-sch-card {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .sch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .sch-title-main {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .sch-time-sub {
+    font-size: 13px;
+    color: #666;
+  }
+
+  /* 하단 고정 FAB도 모바일에서만 표시 */
+  .mobile-fab {
+    display: flex !important;
   }
 }
